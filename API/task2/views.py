@@ -1,4 +1,3 @@
-from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Expenses
@@ -7,19 +6,19 @@ from .serializers import ExpensetypeSerializer
 from .serializers import ExpensemonthSerializer
 from .serializers import ExpensebdtSerializer
 from datetime import datetime
-from .serializers import ExpensebdSerializer
 
-@api_view(['GET'])
+
+@api_view(['GET'])                       #specifying the request
 def totalExpense(request):
-    items= Expenses.objects.all()
+    items= Expenses.objects.all()        # Instance of model Expenses
     serialized_data = []
 
     for item in items:
-        try:
+        try:                              # Handling ValueError that can be caused by missing value
             amount = float(item.amount)
         except (ValueError, TypeError):
             amount = 0.0
-        data = {
+        data = {                          
             'id': item.id,
             'expense_type': item.expense_type,
             'amount': amount,
@@ -28,9 +27,9 @@ def totalExpense(request):
         }
 
         serialized_data.append(data)
-        serializer= ExpenseSerializer(serialized_data, many=True)
+        serializer= ExpenseSerializer(serialized_data, many=True)   #Serializing the data using the ExpenseSerializer
 
-    return Response(serializer.data)
+    return Response(serializer.data)                                #Returning JSON Response
 
 @api_view(['GET'])
 def expensesByType(request):
@@ -65,8 +64,8 @@ def expensesByType(request):
             "Rent": rent_expense,
             "Utilities": utilities_expense
         }]
-        serializer= ExpensetypeSerializer(serialized_data, many=True)
-        return Response(serializer.data)
+        serializer= ExpensetypeSerializer(serialized_data, many=True)  #Serializing the data using the ExpensetypeSerializer
+        return Response(serializer.data)                               #Returning JSON response
 
 @api_view(['GET'])
 def monthlyExpenses(request):
@@ -85,7 +84,6 @@ def monthlyExpenses(request):
                 date = date_value.__str__()
                 date_val = datetime.strptime(date, "%Y-%m-%d")
                 year_month = date_val.strftime("%Y-%m")
-               # year_month = f"{date[0]}-{date[1]}"
                 match year_month:
                     case "2023-01":
                         month1_expense += amount
@@ -128,7 +126,7 @@ def monthlyExpenses(request):
             "Month_12": month12_expense
             
         }]
-        serializer= ExpensemonthSerializer(serialized_data, many=True)
+        serializer= ExpensemonthSerializer(serialized_data, many=True)   #Serializing the data using the ExpensemonthSerializer
         return Response(serializer.data)
 
 @api_view(['GET'])
@@ -139,7 +137,7 @@ def breakExpenses(request):
     serialized_data = []
     expense_type_set = set()
     for expense in expenses:
-        try:
+        try:                              
             amount = float(expense.amount)
         except(ValueError, TypeError):
             amount = 0.0
@@ -148,7 +146,7 @@ def breakExpenses(request):
         except (AttributeError):
             type = "Groceries"
         if type:
-            expense_type_set.add(type)
+            expense_type_set.add(type)           # Creating a set of all expense type
         match type:
             case "Rent":
                 
@@ -185,8 +183,10 @@ def breakExpenses(request):
                 else:
                     Utilities_credit_expense += amount
                 Utilities_expense = Utilities_cash_expense + Utilities_credit_expense
+
         grand_total = Utilities_expense +   Groceries_expense  + Entertainment_expense + Rent_expense  + Transport_expense
-    var_values = {
+
+    var_values = {                          
     "Rent": {
         "credit_expense": Rent_cash_expense,
         "cash_expense": Rent_cash_expense,
@@ -218,7 +218,7 @@ def breakExpenses(request):
             val_for_item = var_values[item]
             data = {
                     "type": item,
-                    "payment_breakdown":[
+                    "payment_breakdown":[                                  
                     {
                     "Credit_Card": val_for_item.get("credit_expense", 0), 
                     "Cash": val_for_item.get("cash_expense", 0),
@@ -228,5 +228,5 @@ def breakExpenses(request):
                     "Grand_Total" : grand_total
             }
             serialized_data.append(data)
-            serializer= ExpensebdtSerializer(serialized_data, many=True)
+            serializer= ExpensebdtSerializer(serialized_data, many=True)   #Serializing the data using the ExpensebdtSerializer
     return Response(serializer.data)
