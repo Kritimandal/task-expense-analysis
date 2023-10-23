@@ -29,7 +29,6 @@ class Expenses:
         print(f"Total Expense: ${total:.4f}")
       
     def expensesByType(self):
-        expenses_by_type = {}
         rent_expense = transport_expense = entertainment_expense = groceries_expense = utilities_expense = r_cash_expense = r_credit_expense = t_cash_expense = t_credit_expense = e_cash_expense = e_credit_expense= g_cash_expense= g_credit_expense= u_cash_expense= u_credit_expense = 0
         for expense in self.expense_data:
             type = expense['Expense_Type']
@@ -95,8 +94,6 @@ class Expenses:
             }
         }
         return data
-
-        # return g_cash_expense, g_credit_expense, t_cash_expense, t_credit_expense, e_cash_expense, e_credit_expense, r_cash_expense, r_credit_expense, u_cash_expense, u_credit_expense
 
 
     
