@@ -19,7 +19,7 @@ from django.urls import path
 from task2 import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('', admin.site.urls),
     path('expenses/', views.totalExpense),
     path('expense_by_type/', views.expensesByType),
     path('monthly_expenses/', views.monthlyExpenses),
