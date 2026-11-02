@@ -19,12 +19,12 @@ export function SummaryCards({ breakdown, months }: Props) {
       </div>
       <div className="stat">
         <span className="stat-label">Largest category</span>
-        <span className="stat-value">{largest ? largest.expense_type : '—'}</span>
+        <span className="stat-value">{largest ? largest.expense_type : 'No data'}</span>
         {largest && <span className="stat-note">{formatAmount(largest.total)}</span>}
       </div>
       <div className="stat">
         <span className="stat-label">Busiest month</span>
-        <span className="stat-value">{busiest ? formatMonth(busiest.month) : '—'}</span>
+        <span className="stat-value">{busiest ? formatMonth(busiest.month) : 'No data'}</span>
         {busiest && <span className="stat-note">{formatAmount(busiest.total)}</span>}
       </div>
       <div className="stat">

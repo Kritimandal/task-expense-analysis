@@ -1,4 +1,4 @@
-# Expense Analysis — Django REST API + React Dashboard
+# Expense Analysis: Django REST API + React Dashboard
 
 ![tests](https://github.com/Kritimandal/task-expense-analysis/actions/workflows/tests.yml/badge.svg)
 
